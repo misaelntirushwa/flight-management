@@ -18,7 +18,7 @@ public class FlightTest {
 
         @BeforeEach
         void setUp() {
-            economyFlight = new Flight("1", "Economy");
+            economyFlight = new EconomyFlight("1");
         }
 
         @Test
@@ -53,7 +53,7 @@ public class FlightTest {
 
         @BeforeEach
         void setUp() {
-            businessFlight = new Flight("2", "Business");
+            businessFlight = new BusinessFlight("2");
         }
 
         @Test

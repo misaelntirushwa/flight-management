@@ -2,14 +2,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Flight {
+public abstract class Flight {
     private String id;
-    private List<Passenger> passengers = new ArrayList<>();
-    private String flightType;
+    List<Passenger> passengers = new ArrayList<>();
 
-    public Flight(String id, String flightType) {
+    public Flight(String id) {
         this.id = id;
-        this.flightType = flightType;
     }
 
     public String getId() {
@@ -20,36 +18,7 @@ public class Flight {
         return Collections.unmodifiableList(passengers);
     }
 
-    public String getFlightType() {
-        return flightType;
-    }
+    public abstract boolean addPassenger(Passenger passenger);
 
-    public boolean addPassenger(Passenger passenger) {
-        switch (flightType) {
-            case "Economy":
-                return passengers.add(passenger);
-
-            case "Business":
-                if (passenger.isVip()) {
-                    return passengers.add(passenger);
-                }
-                return false;
-            default:
-                throw new RuntimeException("Unkown type: " + flightType);
-        }
-    }
-
-    public boolean removePassenger(Passenger passenger) {
-        switch (flightType) {
-            case "Economy":
-                if (!passenger.isVip()) {
-                    return passengers.remove(passenger);
-                }
-                return false;
-            case "Business":
-                return false;
-            default:
-                throw new RuntimeException("Unkown type: " + flightType);
-        }
-    }
+    public abstract boolean removePassenger(Passenger passenger);
 }
