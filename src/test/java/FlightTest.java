@@ -1,13 +1,12 @@
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FlightTest {
 
@@ -38,9 +37,24 @@ public class FlightTest {
                         () -> assertThat(economyFlight.getId(), is(equalTo("1"))),
                         () -> assertThat(economyFlight.addPassenger(mike), is(true)),
                         () -> assertThat(economyFlight.getPassengers(), hasSize(1)),
-                        () -> assertThat(economyFlight.getPassengers().get(0).getName(), is(equalTo("Mike"))),
+                        () -> assertTrue(economyFlight.getPassengers().contains(mike)),
                         () -> assertThat(economyFlight.removePassenger(mike), is(true)),
                         () -> assertThat(economyFlight.getPassengers(), hasSize(0))
+                );
+            }
+
+            @DisplayName("Then you cannot add him to an economy flight more than once")
+            @RepeatedTest(5)
+            public void testEconomyFlightRegularPassengerAddedOnlyOnce(RepetitionInfo repetitionInfo) {
+
+                for (int i = 0; i < repetitionInfo.getCurrentRepetition(); i++) {
+                    economyFlight.addPassenger(mike);
+                }
+
+                assertAll(
+                        "Verify a regular passenger can be added to an economy flight only once",
+                        () -> assertThat(economyFlight.getPassengers(), hasSize(1)),
+                        () -> assertTrue(economyFlight.getPassengers().contains(mike))
                 );
             }
         }
@@ -57,7 +71,7 @@ public class FlightTest {
                         () -> assertThat(economyFlight.getId(), is(equalTo("1"))),
                         () -> assertThat(economyFlight.addPassenger(james), is(true)),
                         () -> assertThat(economyFlight.getPassengers(), hasSize(1)),
-                        () -> assertThat(economyFlight.getPassengers().get(0).getName(), is(equalTo("James"))),
+                        () -> assertThat(economyFlight.getPassengers().contains(james), is(true)),
                         () -> assertThat(economyFlight.removePassenger(james), is(false)),
                         () -> assertThat(economyFlight.getPassengers(), hasSize(1))
                 );
@@ -111,7 +125,7 @@ public class FlightTest {
                         () -> assertThat(businessFlight.getId(), is(equalTo("2"))),
                         () -> assertThat(businessFlight.addPassenger(james), is(true)),
                         () -> assertThat(businessFlight.getPassengers(), hasSize(1)),
-                        () -> assertThat(businessFlight.getPassengers().get(0).getName(), is(equalTo("James"))),
+                        () -> assertThat(businessFlight.getPassengers().contains(james), is(true)),
                         () ->  assertThat(businessFlight.removePassenger(james), is(false)),
                         () ->  assertThat(businessFlight.getPassengers(), hasSize(1))
                 );
