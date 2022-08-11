@@ -123,4 +123,59 @@ public class FlightTest {
 
 
     }
+
+    @DisplayName("Given there is a premium flight")
+    @Nested
+    class PremiumFlightTest {
+        private Flight premiumFlight;
+        private Passenger mike;
+        private Passenger james;
+
+        @BeforeEach
+        void setUp() {
+            premiumFlight = new PremiumFlight("3");
+            mike = new Passenger("Mike", false);
+            james = new Passenger("James", true);
+        }
+
+        @Nested
+        @DisplayName("When we have a regular passenger")
+        class RegularPassenger {
+
+            @Test
+            @DisplayName("Then you cannot add or remove him from a premium flight")
+
+            public void testPremiumFlightRegularPassenger() {
+                assertAll(
+                        "Verify all conditions for a regular passenger and a premium flight",
+                        () -> assertThat(premiumFlight.getId(), is(equalTo("3"))),
+                        () -> assertThat(premiumFlight.addPassenger(mike), is(false)),
+                        () -> assertThat(premiumFlight.getPassengers(), hasSize(0)),
+                        () ->  assertThat(premiumFlight.removePassenger(mike), is(false)),
+                        () ->  assertThat(premiumFlight.getPassengers(), hasSize(0))
+                );
+            }
+        }
+
+        @Nested
+        @DisplayName("When we have a VIP passenger")
+        class VipPassenger {
+
+            @Test
+            @DisplayName("Then you cannot add and remove him from a premium flight")
+
+            public void testPremiumFlightVipPassenger() {
+                assertAll(
+                        "Verify all conditions for a VIP passenger and a premium flight",
+                        () -> assertThat(premiumFlight.getId(), is(equalTo("3"))),
+                        () -> assertThat(premiumFlight.addPassenger(james), is(true)),
+                        () -> assertThat(premiumFlight.getPassengers(), hasSize(1)),
+                        () ->  assertThat(premiumFlight.removePassenger(james), is(true)),
+                        () ->  assertThat(premiumFlight.getPassengers(), hasSize(0))
+                        );
+            }
+        }
+
+
+    }
 }
