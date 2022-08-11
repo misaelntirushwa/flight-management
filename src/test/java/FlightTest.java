@@ -3,7 +3,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
 public class FlightTest {
 
@@ -22,24 +25,24 @@ public class FlightTest {
         public void testEconomyFlightRegularPassenger() {
             Passenger mike = new Passenger("Mike", false);
 
-            assertEquals("1", economyFlight.getId());
-            assertEquals(true, economyFlight.addPassenger(mike));
-            assertEquals(1, economyFlight.getPassengers().size());
-            assertEquals("Mike", economyFlight.getPassengers().get(0).getName());
-            assertEquals(true, economyFlight.removePassenger(mike));
-            assertEquals(0, economyFlight.getPassengers().size());
+            assertThat(economyFlight.getId(), is(equalTo("1")));
+            assertThat(economyFlight.addPassenger(mike), is(true));
+            assertThat(economyFlight.getPassengers(), hasSize(1));
+            assertThat(economyFlight.getPassengers().get(0).getName(), is(equalTo("Mike")));
+            assertThat(economyFlight.removePassenger(mike), is(true));
+            assertThat(economyFlight.getPassengers(), hasSize(0));
         }
 
         @Test
         public void testEconomyFlightVipPassenger() {
             Passenger james = new Passenger("James", true);
 
-            assertEquals("1", economyFlight.getId());
-            assertEquals(true, economyFlight.addPassenger(james));
-            assertEquals(1, economyFlight.getPassengers().size());
-            assertEquals("James", economyFlight.getPassengers().get(0).getName());
-            assertEquals(false, economyFlight.removePassenger(james));
-            assertEquals(1, economyFlight.getPassengers().size());
+            assertThat(economyFlight.getId(), is(equalTo("1")));
+            assertThat(economyFlight.addPassenger(james), is(true));
+            assertThat(economyFlight.getPassengers(), hasSize(1));
+            assertThat(economyFlight.getPassengers().get(0).getName(), is(equalTo("James")));
+            assertThat(economyFlight.removePassenger(james), is(false));
+            assertThat(economyFlight.getPassengers(), hasSize(1));
         }
     }
 
@@ -57,24 +60,23 @@ public class FlightTest {
         public void testBusinessFlightRegularPassenger() {
             Passenger mike = new Passenger("Mike", false);
 
-            assertEquals("2", businessFlight.getId());
-            assertEquals(false, businessFlight.addPassenger(mike));
-            assertEquals(0, businessFlight.getPassengers().size());
-
-            assertEquals(false, businessFlight.removePassenger(mike));
-            assertEquals(0, businessFlight.getPassengers().size());
+            assertThat(businessFlight.getId(), is(equalTo("2")));
+            assertThat(businessFlight.addPassenger(mike), is(false));
+            assertThat(businessFlight.getPassengers(), hasSize(0));
+            assertThat(businessFlight.removePassenger(mike), is(false));
+            assertThat(businessFlight.getPassengers(), hasSize(0));
         }
 
         @Test
         public void testBusinessFlightVipPassenger() {
             Passenger james = new Passenger("James", true);
 
-            assertEquals("2", businessFlight.getId());
-            assertEquals(true, businessFlight.addPassenger(james));
-            assertEquals(1, businessFlight.getPassengers().size());
-            assertEquals("James", businessFlight.getPassengers().get(0).getName());
-            assertEquals(false, businessFlight.removePassenger(james));
-            assertEquals(1, businessFlight.getPassengers().size());
+            assertThat(businessFlight.getId(), is(equalTo("2")));
+            assertThat(businessFlight.addPassenger(james), is(true));
+            assertThat(businessFlight.getPassengers(), hasSize(1));
+            assertThat(businessFlight.getPassengers().get(0).getName(), is(equalTo("James")));
+            assertThat(businessFlight.removePassenger(james), is(false));
+            assertThat(businessFlight.getPassengers(), hasSize(1));
         }
 
     }
